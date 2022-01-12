@@ -56,9 +56,9 @@ function handleLoadResult() {
               <button onclick="handleResetPass(${item.eid}, '${item.username}')" type="button" class="btn btn-danger" data-toggle="modal" data-target="#reset-password-confirm">
                 <i class="fa fa-key"></i>
               </button>
-              <button onclick="showUserInfo(${item.eid})" type="button" class="btn btn-primary" data-toggle="modal" data-target="#show-user-info">
+              <a href="user_info.php?id=${item.eid}" type="button" class="btn btn-primary">
                 <i class="fas fa-info-circle"></i>
-              </button>
+              </a>
           </td>`;
                 tbody.appendChild(tr);
             });
@@ -66,31 +66,6 @@ function handleLoadResult() {
 
 }
 
-// SHOW THÔNG TIN CỦA 1 USER CỤ THỂ
-function showUserInfo(id) {
-    const getUserAPI = "http://localhost:8080/admin/api/get_user.php";
-    fetch(getUserAPI, {
-            method: "POST",
-            body: JSON.stringify({ id: id }),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            data = data.data;
-            $(".eid").html(data.eid);
-            $(".name").html(data.fullname);
-            $(".birthday").html(data.birthday);
-            $(".gender").html(data.gender);
-            $(".department").html(data.phongban);
-            $(".email").html(data.email);
-            $(".phone").html(data.phone);
-            $(".address").html(data.address);
-            if (data.level == 2) {
-                $(".role").html("nhân viên");
-            } else {
-                $(".role").html("trưởng phòng");
-            }
-        });
-}
 
 // RESET PASSWORD CỦA 1 USER VỀ MẶC ĐỊNH
 function handleResetPass(id, user) {
@@ -255,16 +230,15 @@ function handleLoadDepartment() {
                 tr.innerHTML = `
                     <td>${item.ma_so}</td>
                     <td>${item.name}</td>
-                    <td>${item.manager}</td>
                     <td>${item.description}</td>
                     <td>
                         <button onclick="handleUpdateDepartment(${item.id}, ${item.ma_so}, '${item.name}', '${item.description}')" 
                         type="button" class="btn btn-danger" data-toggle="modal" data-target="#edit-department-dialog" title="cập nhật thông tin phòng ban">
                           <i class="fas fa-edit"></i>
                         </button>
-                        <button onclick="showDeparmentInfo(${item.id})" type="button" class="btn btn-primary" data-toggle="modal" data-target="#show-department-info" title="xem thông tin phòng ban">
+                        <a href="department_info.php?id=${item.id}" type="button" class="btn btn-primary" title="xem thông tin phòng ban">
                           <i class="fas fa-info-circle"></i>
-                        </button>
+                        </a>
                         <button onclick="userOfDepartment('${item.name}', ${item.id})" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#change-manager-modal" title="bổ nhiệm trưởng phòng">
                           <i class="fas fa-user-shield"></i>
                         </button>

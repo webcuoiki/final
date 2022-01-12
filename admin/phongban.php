@@ -33,7 +33,7 @@ if ($_SESSION['role'] != 'admin') {
         <ul class="header-ul">
             <li><a class="logo" href="#"><img src=""></a></li>
             <li><a href="./phongban.php">Quản Lý Phòng Ban</a></li>
-            <li><a href="">Quản Lý Nhân Viên</a></li>
+            <li><a href="./index.php">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Lịch</a></li>
             <li class="nav-item active"><a id="thongke" href="./admin/info.php">Thông Tin</a></li>
             <li class="nav-item active"><a id="logout" href="../logout.php">Đăng xuất</a></li>
@@ -44,12 +44,11 @@ if ($_SESSION['role'] != 'admin') {
         <button onclick="handleAddDepartment()" class="btn btn-primary" data-toggle="modal" data-target="#confirm-add-department">
             Thêm phòng ban
         </button>
-        <table class="table table-hover mt-4">
+        <table class="table table-hover mt-4 table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th>Mã số</th>
                     <th>Tên phòng ban</th>
-                    <th>Trưởng phòng</th>
                     <th>Mô tả</th>
                     <th>Actions</th>
                 </tr>

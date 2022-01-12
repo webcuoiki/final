@@ -50,8 +50,8 @@ $departments = $data['data'];
                 Thêm nhân viên
             </button>
 
-            <table class="table table-hover mt-4">
-                <thead>
+            <table class="table table-hover mt-4 table-bordered">
+                <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
                         <th>Tên</th>
@@ -64,8 +64,6 @@ $departments = $data['data'];
             </table>
         </div>
     </div>
-
-
 
     <div id="reset-password-confirm" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -89,49 +87,6 @@ $departments = $data['data'];
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="show-user-info" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card">
-                    <img src="../src/img/beard.png" class="card-img-top mx-auto" alt="avatar" style="max-width: 100px;" />
-                    <div class="card-body">
-                        <h5 class="card-title">Thông tin nhân viên</h5>
-                        <p class="card-text">
-                            Mã số: <span class='eid'></span>
-                        </p>
-                        <p class="card-text">
-                            Họ và tên: <span class='name'></span>
-                        </p>
-                        <p class="card-text">
-                            Ngày sinh: <span class='birthday'></span>
-                        </p>
-                        <p class="card-text">
-                            Giới tính: <span class='gender'></span>
-                        </p>
-                        <p class="card-text">
-                            Email: <span class='email'></span>
-                        </p>
-                        <p class="card-text">
-                            Số điện thoại: <span class='phone'></span>
-                        </p>
-                        <p class="card-text">
-                            Địa chỉ: <span class='address'></span>
-                        </p>
-                        <p class="card-text">
-                            Chức vụ: <span class='role'></span>
-                        </p>
-                        <p class="card-text">
-                            Phòng ban: <span class='department'></span>
-                        </p>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">
-                            Đóng
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

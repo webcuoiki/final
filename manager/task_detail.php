@@ -10,10 +10,20 @@ if ($_SESSION['role'] != 'manager') {
     exit();
 }
 
-require_once("../connect_db.php");
-$conn = connection();
-$sql = "SELECT * FROM task";
-$result = $conn->query($sql);
+if (isset($_REQUEST['id'])) {
+    require_once("../connect_db.php");
+    $id = $_REQUEST['id'];
+    $conn = connection();
+    $sql = "SELECT * FROM task WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result->num_rows != 1) {
+        die('<h1>Task không tồn tại</h1>');
+    } else {
+        $row = $result->fetch_assoc();
+    }
+} else {
+    header('Location: ../404.php');
+}
 
 ?>
 
@@ -24,7 +34,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trưởng phòng</title>
+    <title>Chi tiết nhiệm vụ</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -46,54 +56,111 @@ $result = $conn->query($sql);
     </div>
     <div class="container">
         <div class="container mt-2 col-8">
-            <h2 class="mt-3 mb-3">Danh sách nhiệm vụ</h2>
+            <h2 class="mt-3 mb-3">Chi tiết nhiệm vụ</h2>
             <button onclick="handleAddTask()" class="btn btn-primary" data-toggle="modal" data-target="#confirm-add-task">
                 Thêm nhiệm vụ mới
             </button>
 
             <table class="table table-hover table-bordered mt-4">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Mô tả</th>
-                        <th>Tiêu đề</th>
-                        <th>Trạng thái</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+
                 <tbody>
-                    <?php
-                    while ($row = $result->fetch_assoc()) { ?>
-                        <!-- // list tasks  -->
-                        <tr>
-                            <td><?= $row['id'] ?></td>
-                            <td><?= $row['name'] ?></td>
-                            <td><?= $row['description'] ?></td>
-                            <td><?= $row['title'] ?></td>
-                            <td>
-                                <?php
-                                $state = $row['state'];
-                                if ($state == 0) {
-                                    echo "New";
-                                } else if ($state == 1) {
-                                    echo 'In progress';
-                                } else if ($state == 3) {
-                                    echo 'Canceled';
-                                } else if ($state == 4) {
-                                    echo "Waiting";
-                                } else if ($state == 5) {
-                                    echo "Rejected";
-                                } else if ($state == 6) {
-                                    echo "Completed";
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <a href="task_detail.php?id=<?= $row['id'] ?>" class="btn btn-primary"><i class="fas fa-info-circle"></i></a>
-                            </td>
-                        </tr>
-                    <?php } ?>
+                    <!-- // list tasks  -->
+                    <tr>
+                        <td class="font-weight-bold">ID</td>
+                        <td><?= $row['id'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Tên nhiệm vụ</td>
+                        <td><?= $row['name'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Mô tả</td>
+                        <td><?= $row['description'] ?></td>
+                    </tr>
+
+                    <tr>
+                        <td class="font-weight-bold">Người nhận</td>
+                    </tr>
+
+                    <tr>
+                        <td class="font-weight-bold">Trạng thái</td>
+                        <td>
+                            <?php
+                            $state = $row['state'];
+                            if ($state == 0) {
+                                echo "New";
+                            } else if ($state == 1) {
+                                echo 'In progress';
+                            } else if ($state == 3) {
+                                echo 'Canceled';
+                            } else if ($state == 4) {
+                                echo "Waiting";
+                            } else if ($state == 5) {
+                                echo "Rejected";
+                            } else if ($state == 6) {
+                                echo "Completed";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Đánh giá</td>
+                        <td>
+                            <?php
+                            $rate = $row['rate'];
+                            if ($rate == 0) {
+                                echo "";
+                            } else if ($rate == 1) {
+                                echo "Good";
+                            }
+                            if ($rate == 2) {
+                                echo "OK";
+                            }
+                            if ($rate == 3) {
+                                echo "Bad";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Đính kèm</td>
+                        <td>
+                            <span><?= $row['attach'] ?></span>
+                            <a href="../uploads/<?= $row['attach'] ?>" class="btn btn-primary" download>
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Thời hạn</td>
+                        <td><?= $row['expire'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Actions</td>
+                        <td>
+                            <?php
+                            $state = $row['state'];
+                            $id = $row['id'];
+                            if ($state == 0) {
+                                echo ("<a href='cancel_task.php?id=$id' class='btn btn-primary'>
+                                            <i class='fas fa-minus-circle'></i>
+                                            </a>");
+                            } else if ($state == 4) {
+                                echo ("<a href='accept_task.php?id=$id' class='btn btn-primary'>
+                                            <i class='fas fa-check-square'></i>
+                                            </a>");
+                                echo ("<a href='reject_task.php?id=$id' class='btn btn-primary'>
+                                            <i class='fas fa-window-close'></i>
+                                            </a>");
+                            } else {
+                                echo ("<a href='rating_task.php?id=$id' class='btn btn-primary'>
+                                            <i class='fas fa-window-close'></i>
+                                            </a>");
+                            }
+                            ?>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
