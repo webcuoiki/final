@@ -1,11 +1,16 @@
 <?php
-// session_start();
+session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
     exit();
 }
 
-require_once("./connect_db.php");
+if($_SESSION['role'] != 'admin') {
+    header('Location: ../404.php');
+    exit();
+}
+
+require_once("../connect_db.php");
 $data = get_departments();
 $departments = $data['data'];
 ?>
@@ -23,14 +28,22 @@ $departments = $data['data'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
-    <link rel="stylesheet" href="./home.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- // navbar include -->
-        <?php include("navbar.php") ?>
+    <div class="header-panel">
+        <ul class="header-ul">
+            <li><a class="logo" href="#"><img src=""></a></li>
+            <li><a href="./phongban.php">Quản Lý Phòng Ban</a></li>
+            <li><a href="">Quản Lý Nhân Viên</a></li>
+            <li><a href="#">Quản Lý Lịch</a></li>
+            <li class="nav-item active"><a id="thongke" href="./admin/info.php">Thông Tin</a></li>
+            <li class="nav-item active"><a id="logout" href="../logout.php">Đăng xuất</a></li>
+        </ul>
+    </div>
 
+    <div class="container">
         <div class="container mt-2 col-8">
             <h2 class="mt-3 mb-3">Danh sách nhân viên</h2>
             <button onclick="handleAddUser()" class="btn btn-primary" data-toggle="modal" data-target="#confirm-add-user">
@@ -60,9 +73,6 @@ $departments = $data['data'];
                 <form method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">Reset mật khẩu</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            &times;
-                        </button>
                     </div>
                     <div class="modal-body">
                         <p>
@@ -103,6 +113,15 @@ $departments = $data['data'];
                             Giới tính: <span class='gender'></span>
                         </p>
                         <p class="card-text">
+                            Email: <span class='email'></span>
+                        </p>
+                        <p class="card-text">
+                            Số điện thoại: <span class='phone'></span>
+                        </p>
+                        <p class="card-text">
+                            Địa chỉ: <span class='address'></span>
+                        </p>
+                        <p class="card-text">
                             Chức vụ: <span class='role'></span>
                         </p>
                         <p class="card-text">
@@ -131,36 +150,45 @@ $departments = $data['data'];
         </div>
     </div>
 
-    <div id="confirm-add-user" class="modal fade" role="dialog">
+    <div id="confirm-add-user" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="add-user-form" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title">Thêm nhân viên mới</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            &times;
-                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="full-name">Họ và tên</label>
-                            <input type="text" name="full-name" class="form-control" id="full-name" require />
+                            <input type="text" name="full-name" class="form-control" id="full-name" required />
                         </div>
                         <div class="form-group">
                             <label for="user-name">Username</label>
-                            <input type="text" name="user-name" class="form-control" id="user-name" require />
+                            <input type="text" name="user-name" class="form-control" id="user-name" required />
                         </div>
                         <div class="form-group">
                             <label for="user-birthday">Ngày sinh</label>
-                            <input type="date" name="user-birthday" min="01-01-1950" class="form-control" id="user-birthday" require />
+                            <input type="date" name="user-birthday" min="01-01-1950" class="form-control" id="user-birthday" required />
                         </div>
                         <div class="form-group">
                             <label for="user-gender">Giới tính</label>
                             <select class="form-control" name="user-gender" id="user-gender">
                                 <option value="nam">Nam</option>
                                 <option value="nữ">Nữ</option>
-                                <option value="khác">Khác</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email">Email</label>
+                            <input type="email" name="user-email" class="form-control" id="user-email" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-phone">Số điện thoại</label>
+                            <input type="number" name="user-phone" class="form-control" id="user-phone" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-address">Address</label>
+                            <textarea class="form-control" name="user-address" id="user-address" rows="2" required></textarea>
+
                         </div>
                         <div class="form-group">
                             <label for="phongban">Phòng ban</label>
@@ -170,7 +198,7 @@ $departments = $data['data'];
                                 foreach ($departments as $department) {
                                 ?>
                                     <!-- option -->
-                                    <option value="<?= strtolower($department['name']) ?>"><?= $department['name'] ?></option>
+                                    <option value="<?= $department['id'] ?>"><?= $department['name'] ?></option>
                                 <?php
                                 }
                                 ?>
@@ -190,7 +218,7 @@ $departments = $data['data'];
         </div>
     </div>
 
-    <script src='./main.js'></script>
+    <script src='../main.js'></script>
 </body>
 
 </html>

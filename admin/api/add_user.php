@@ -4,19 +4,17 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Headers: *");
 require('../../connect_db.php');
 
-// $user = $_POST['user'];
-// $fullname = $_POST['fullname'];
-// $phongban = $_POST['phongban'];
-// $level = $_POST['level'];
-
 $json = file_get_contents('php://input');
 $data = json_decode($json);
 $user = $data->user;
 $fullname = $data->fullname;
-$phongban = $data->phongban;
+$phongban = intval($data->phongban);
 $birthday = $data->birthday;
 $gender = $data->gender;
+$email = $data->email;
+$phone = intval($data->phone);
+$address = $data->address;
 
-$result = register($user, $user, $fullname, $phongban, $birthday, $gender);
+$result = register($user, $user, $fullname, $phongban, $birthday, $gender, $email, $phone, $address);
 echo json_encode($result);
 ?>

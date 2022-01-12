@@ -1,10 +1,10 @@
 <?php
 function connection()
 {
-    $host = 'localhost';
+    $host = 'mysql-server';
     $root = 'root';
-    $password = '';
-    $db = 'webcuoiki';
+    $password = 'root';
+    $db = 'web_db';
 
     $conn = new mysqli($host, $root, $password, $db);
     if ($conn->connect_error) {
@@ -26,24 +26,24 @@ function login($user, $pass)
 
     $result = $stmt->get_result();
     if ($result->num_rows == 0) {
-        return array('code' => 2, 'error' => 'Username does not exists');
+        return array('code' => 2, 'error' => 'Tên người dùng không đúng');
     }
 
     $data = $result->fetch_assoc();
     $hashed_pw = $data['password'];
     if (!password_verify($pass, $hashed_pw)) {
-        return array('code' => 3, 'error' => 'Password is invalid');
+        return array('code' => 3, 'error' => 'Mật khẩu không đúng');
     } else if ($data['activated'] == 0) {
-        return array('code' => 4, 'error' => 'Account is not activated', 'data' => $data);
+        return array('code' => 4, 'data' => $data);
     } else {
-        return array('code' => 0, 'error' => '', 'data' => $data);
+        return array('code' => 0, 'data' => $data);
     }
 }
 
 // kiểm tra user đã tồn tại hay chưa
 function user_exists($user)
 {
-    $sql = 'select * from account where username = ?';
+    $sql = 'select username from account where username = ?';
     $conn = connection();
 
     $stmt = $conn->prepare($sql);
@@ -60,7 +60,7 @@ function user_exists($user)
 }
 
 //tham số: username, pass, fullname, phòng ban, chức vụ
-function register($user, $pass, $name, $phongban, $birthday, $gender)
+function register($user, $pass, $name, $phongban, $birthday, $gender, $email, $phone, $address)
 {
     if (user_exists($user)) {
         return array('code' => 1, 'error' => 'Username đã tồn tại');
@@ -72,22 +72,21 @@ function register($user, $pass, $name, $phongban, $birthday, $gender)
     $random_num = random_int(0, 1000);
     $token = md5($user . '+' . $random_num);
 
-    $sql = 'insert into account(username, password, birthday, gender, active_token, fullname, phongban)
-            values(?, ?, ?, ?, ?, ?, ?)';
+    $sql = "INSERT INTO account(username, password, fullname, birthday, gender, email, phone, address, active_token, phongban)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $conn = connection();
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sssssss', $user, $hashed_pw, $birthday, $gender, $token, $name, $phongban);
+    $stmt->bind_param('ssssssissi', $user, $hashed_pw, $name, $birthday, $gender, $email, $phone, $address, $token, $phongban);
     if (!$stmt->execute()) {
         return array('code' => 2, 'error' => 'Excute command failled');
     }
-    return array('code' => 0, 'error' => '');
+    return array('code' => 0);
 }
 
 // active account 
 function activateAccount($newPass, $user, $token)
 {
-
     $sql = 'select * from account where username = ? and active_token = ? and activated = 0';
     $conn = connection();
 
@@ -99,7 +98,7 @@ function activateAccount($newPass, $user, $token)
 
     $result = $stmt->get_result();
     if ($result->num_rows == 0) {
-        return array('code' => 2, 'error' => 'Username or token not found');
+        return array('code' => 2, 'error' => 'Username hoặc token không hợp lệ');
     }
 
     $data = $result->fetch_assoc();
@@ -115,7 +114,7 @@ function activateAccount($newPass, $user, $token)
     if (!$stmt->execute()) {
         return array('code' => 1, 'error' => 'Excute command failled');
     }
-    return array('code' => 0, 'error' => '');
+    return array('code' => 0);
 }
 
 function get_users()
@@ -128,15 +127,16 @@ function get_users()
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
-    return array('code' => 0, 'error' => '', 'data' => $data);
+    return array('code' => 0, 'data' => $data);
 }
 
-function get_users_of_department($name){
+function get_users_of_department($id)
+{
     $sql = 'select * from account where phongban = ?';
     $conn = connection();
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $name);
+    $stmt->bind_param('i', $id);
     if (!$stmt->execute()) {
         return array('code' => 1, 'error' => 'Excute command failled');
     }
@@ -145,7 +145,7 @@ function get_users_of_department($name){
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
-    return array('code' => 0, 'error' => '', 'data' => $data);
+    return array('code' => 0, 'data' => $data);
 }
 
 function get_user($id)
@@ -160,7 +160,7 @@ function get_user($id)
     }
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return array('code' => 0, 'error' => '', 'data' => $data);
+    return array('code' => 0, 'data' => $data);
 }
 
 function get_departments()
@@ -173,12 +173,12 @@ function get_departments()
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
-    return array('code' => 0, 'error' => '', 'data' => $data);
+    return array('code' => 0, 'data' => $data);
 }
 
 function get_department($id)
 {
-    $sql = 'select * from department where id = ?';
+    $sql = 'SELECT * FROM department INNER JOIN account ON department.manager = account.eid WHERE department.id = ?';
     $conn = connection();
 
     $stmt = $conn->prepare($sql);
@@ -192,10 +192,11 @@ function get_department($id)
         return array('code' => 2, 'error' => 'Id không hợp lệ');
     }
     $data = $result->fetch_assoc();
-    return array('code' => 0, 'error' => '', 'data' => $data);
+    return array('code' => 0, 'data' => $data);
 }
 
-function name_exists($name){
+function name_exists($name)
+{
     $sql = 'select * from department where name = ?';
     $conn = connection();
 
@@ -212,7 +213,8 @@ function name_exists($name){
     return false;
 }
 
-function code_exists($code){
+function code_exists($code)
+{
     $sql = 'select * from department where ma_so = ?';
     $conn = connection();
 
@@ -229,12 +231,13 @@ function code_exists($code){
     return false;
 }
 
-function add_deparmement($name, $code, $desc){
-    if(name_exists($name)){
+function add_deparmement($name, $code, $desc)
+{
+    if (name_exists($name)) {
         return array('code' => 1, 'error' => 'Phòng ban này đã tồn tại');
     }
-    
-    if(code_exists($code)){
+
+    if (code_exists($code)) {
         return array('code' => 2, 'error' => 'Mã số này đã được sử dụng');
     }
 
@@ -247,10 +250,11 @@ function add_deparmement($name, $code, $desc){
     if (!$stmt->execute()) {
         return array('code' => 3, 'error' => 'Excute command failled');
     }
-    return array('code' => 0, 'error' => '');
+    return array('code' => 0);
 }
 
-function update_department($id, $name, $code, $desc){
+function update_department($id, $name, $code, $desc)
+{
     $sql = "UPDATE department SET name = ?, ma_so = ?, description = ? WHERE id = ?";
     $conn = connection();
     $stm = $conn->prepare($sql);
@@ -278,7 +282,7 @@ function reset_default_password($id, $username)
     if ($stmt->affected_rows === 0) {
         return array('code' => 2, 'error' => "Không thể reset password");
     }
-    return array('code' => 0, 'error' => '');
+    return array('code' => 0);
 }
 
 function change_password($user, $token, $oldPass, $newPass)
@@ -321,14 +325,48 @@ function change_password($user, $token, $oldPass, $newPass)
     if (!$stmt->execute()) {
         return array('code' => 2, 'error' => 'Excute command failled');
     }
-    return array('code' => 0, 'error' => '');
+    return array('code' => 0);
 }
 
-function choose_manager($id, $department){
-    $sql = "UPDATE account, department SET account.level = 1, department.manager = ? WHERE account.eid = ? AND department.ma_so = ?";
+function choose_manager($id, $user_id)
+{
+    $sql = "SELECT manager FROM department WHERE id = $id";
+    $sql2 = "UPDATE account, department SET account.level = 1, department.manager = ? WHERE account.eid = ? AND department.id = ?";
     $conn = connection();
-    $stm = $conn->prepare($sql);
-    $stm->bind_param('iii', $id, $id, $department);
-    $stm->execute();
-    return $stm->affected_rows;
+    $result = $conn->query($sql);
+    $data = $result->fetch_assoc();
+
+    // nếu chưa có trưởng phòng, set trưởng phòng mới
+    if ($data['manager'] === null) {
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param('iii', $user_id, $user_id, $id);
+        if (!$stmt->execute()) {
+            return array('code' => 1, 'error' => 'Excute command failled');
+        }
+
+        if ($stmt->affected_rows != 1) {
+            return array('code' => 2, 'error' => "Chọn trưởng phòng thất bại");
+        }
+        return array('code' => 0);
+
+        // nếu ng đó đã là trưởng phòng
+    } else if ($data['manager'] == $user_id) {
+        return array('code' => 3, 'error' => 'Người này đã là trưởng phòng');
+    } else { // nếu ng khác đang làm trưởng phòng, huỷ chức ng đó, set ng mới
+        $old_manager = $data['manager'];
+        $sql3 = "UPDATE account SET account.level = 2 WHERE account.eid = $old_manager";
+        $conn->query($sql3);
+
+        // set trưởng phòng mới
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param('iii', $user_id, $user_id, $id);
+        if (!$stmt->execute()) {
+            return array('code' => 1, 'error' => 'Excute command failled');
+        }
+
+        if ($stmt->affected_rows != 1) {
+            return array('code' => 2, 'error' => "Chọn trưởng phòng thất bại");
+        }
+        return array('code' => 0);
+    }
 }

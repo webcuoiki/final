@@ -7,8 +7,9 @@ header('Content-Type: application/json');
 require('../../connect_db.php');
 $raw = file_get_contents('php://input');
 $data = json_decode($raw);
-$id = $data->id;
-$department = $data->department;
+$id = intval($data->id);
+$user_id = intval($data->userId);
 
-$result = choose_manager($id, $department)
+$result = choose_manager($id, $user_id);
+echo json_encode($result);
 ?>

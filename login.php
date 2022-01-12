@@ -24,7 +24,7 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
         $result = login($user, $pass);
         if ($result['code'] == 0) {
             $data = $result['data'];
-            // $_SESSION['name'] = $name;
+            $_SESSION['name'] = $name;
             $_SESSION['user'] = $user;
 
             if ($data['level'] == 0) {

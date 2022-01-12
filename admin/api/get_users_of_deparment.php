@@ -5,8 +5,8 @@ require_once '../../connect_db.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json);
-$name = $data->name;
+$id = $data->id;
 
-$result = get_users_of_department($name);
+$result = get_users_of_department($id);
 die(json_encode($result));
 ?>

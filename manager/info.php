@@ -5,7 +5,9 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 require_once('../connect_db.php');
+
 $result = get_user(1);
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +30,6 @@ $result = get_user(1);
 <div class="header-panel">
         <ul class="header-ul">
             <li><a class="logo" href="index.php"><img src=""></a></li>
-            <li><a href="phongban.php">Quản Lý Phòng Ban</a></li>
             <li><a href="../index.php">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Lịch</a></li>
             <li class="nav-item active"><a id="thongke" href="info.php">Thông Tin</a></li>

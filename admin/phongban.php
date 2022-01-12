@@ -5,6 +5,11 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+if ($_SESSION['role'] != 'admin') {
+    header('Location: ../404.php');
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +48,7 @@ if (!isset($_SESSION['user'])) {
     </div>
 
     <!-- cập nhật dialog -->
-    <div class="modal fade" id="edit-department-dialog">
+    <div class="modal fade" id="edit-department-dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,7 +81,8 @@ if (!isset($_SESSION['user'])) {
         </div>
     </div>
 
-    <div id="show-department-info" class="modal fade" role="dialog">
+
+    <div id="show-department-info" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card">
@@ -104,33 +110,33 @@ if (!isset($_SESSION['user'])) {
     </div>
 
     <!-- // bổ nhiệm trưởng phòng -->
-    <div id="change-manager" class="modal fade" role="dialog">
+    <div id="change-manager-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Bổ nhiệm trưởng phòng cho phòng <span id="department"></span> </h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <select class="form-control" name="choose-manager" id="choose-manager">
-                         
+                <form id="change-manager-form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <select class="form-control" name="choose-manager" id="choose-manager">
 
-                        </select>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary exit" data-dismiss="modal">
-                        Thoát
-                    </button>
-                    <button type="submit" class="btn btn-success">Bổ nhiệm</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary exit" data-dismiss="modal">
+                            Thoát
+                        </button>
+                        <button type="submit" id="cmanager-btn" class="btn btn-success">Bổ nhiệm</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
 
-    <div id="add-show-mess" class="modal fade" role="dialog">
+    <div id="add-show-mess" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -144,7 +150,7 @@ if (!isset($_SESSION['user'])) {
         </div>
     </div>
 
-    <div id="confirm-add-department" class="modal fade" role="dialog">
+    <div id="confirm-add-department" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="add-department-form" method="POST">
