@@ -4,7 +4,7 @@ body.bg_login {
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background: url(../img/background.jpg);
+    background: url(./src/img/background.png);
     background-size: cover;
 }
 
@@ -129,6 +129,7 @@ body.bg_login {
 }
 
 .header-panel ul {
+    display: flex;
     background-color: #67abce;
     list-style-type: none;
     text-align: left;

@@ -1,6 +1,6 @@
 <?php
+ob_start();
 session_start();
-require_once('connect_db.php');
 
 // kiểm tra session, nếu có thì chuyển về home
 if (isset($_SESSION['user']) && isset($_SESSION['role'])) {
@@ -21,6 +21,7 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
     } else if (empty($pass)) {
         $error = 'Vui lòng nhập mật khẩu';
     } else {
+        require_once('connect_db.php');
         $result = login($user, $pass);
         if ($result['code'] == 0) {
             $data = $result['data'];
@@ -54,7 +55,7 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
     <meta charset="utf-8">
     <title>ADMIN</title>
     <!-- <link rel="shortcut icon" href="/assets/favicon.ico"> -->
-    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body class="bg_login">

@@ -60,7 +60,7 @@ function user_exists($user)
 }
 
 //tham số: username, pass, fullname, phòng ban, chức vụ
-function register($user, $pass, $name, $phongban, $birthday, $gender, $email, $phone, $address)
+function register($user, $pass, $fullname, $phongban, $birthday, $gender, $email, $phone, $address)
 {
     if (user_exists($user)) {
         return array('code' => 1, 'error' => 'Username đã tồn tại');
@@ -77,7 +77,7 @@ function register($user, $pass, $name, $phongban, $birthday, $gender, $email, $p
     $conn = connection();
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssssssissi', $user, $hashed_pw, $name, $birthday, $gender, $email, $phone, $address, $token, $phongban);
+    $stmt->bind_param('sssssssssi', $user, $hashed_pw, $fullname, $birthday, $gender, $email, $phone, $address, $token, $phongban);
     if (!$stmt->execute()) {
         return array('code' => 2, 'error' => 'Excute command failled');
     }

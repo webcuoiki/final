@@ -12,7 +12,7 @@ $phongban = intval($data->phongban);
 $birthday = $data->birthday;
 $gender = $data->gender;
 $email = $data->email;
-$phone = intval($data->phone);
+$phone = $data->phone;
 $address = $data->address;
 
 $result = register($user, $user, $fullname, $phongban, $birthday, $gender, $email, $phone, $address);

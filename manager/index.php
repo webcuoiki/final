@@ -25,12 +25,21 @@ if ($_SESSION['role'] != 'manager') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
+    <div class="header-panel">
+        <ul class="header-ul">
+            <li><a class="logo" href="#"><img src=""></a></li>
+            <li><a href="">Danh sách nhiệm vụ</a></li>
+            <li><a href="./nhanvien.php">Danh sách nhân viên</a></li>
+            <li><a href="#">Quản Lý Lịch</a></li>
+            <li class="nav-item"><a id="thongke" href="./info.php">Thông Tin</a></li>
+            <li class="nav-item"><a id="logout" href="../logout.php">Đăng xuất</a></li>
+        </ul>
+    </div>
     <div class="container">
-        <!-- // navbar include -->
-
         <div class="container mt-2 col-8">
             <h2 class="mt-3 mb-3">Danh sách nhiệm vụ</h2>
             <button onclick="handleAddTask()" class="btn btn-primary" data-toggle="modal" data-target="#confirm-add-task">

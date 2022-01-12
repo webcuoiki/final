@@ -25,16 +25,27 @@ if ($_SESSION['role'] != 'admin') {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
+    <div class="header-panel">
+        <ul class="header-ul">
+            <li><a class="logo" href="#"><img src=""></a></li>
+            <li><a href="./phongban.php">Quản Lý Phòng Ban</a></li>
+            <li><a href="">Quản Lý Nhân Viên</a></li>
+            <li><a href="#">Quản Lý Lịch</a></li>
+            <li class="nav-item active"><a id="thongke" href="./admin/info.php">Thông Tin</a></li>
+            <li class="nav-item active"><a id="logout" href="../logout.php">Đăng xuất</a></li>
+        </ul>
+    </div>
     <div class="container mt-2">
         <h2 class="mt-3 mb-3">Danh sách phòng ban</h2>
         <button onclick="handleAddDepartment()" class="btn btn-primary" data-toggle="modal" data-target="#confirm-add-department">
             Thêm phòng ban
         </button>
         <table class="table table-hover mt-4">
-            <thead>
+            <thead class="thead-dark">
                 <tr>
                     <th>Mã số</th>
                     <th>Tên phòng ban</th>
