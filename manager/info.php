@@ -39,7 +39,7 @@ $result = get_user(1);
     <div class="container">
         <!-- // include navbar here -->
         <div class="col-8">
-            <h1 class="text-center">Thông tin giám đốc</h1>
+            <h1 class="text-center">Thông tin trưởng phòng</h1>
 
         </div>
     </div>
