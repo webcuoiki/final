@@ -21,18 +21,18 @@ $result = get_user(1);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../src/css/style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
 <div class="header-panel">
         <ul class="header-ul">
-            <li><a class="logo" href="index.php"><img src=""></a></li>
+           <li><a class="logo" href=""><img src="../src/img/logo.png"></a></li>
             <li><a href="phongban.php">Quản Lý Phòng Ban</a></li>
             <li><a href="../index.php">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Lịch</a></li>
             <li class="nav-item active"><a id="thongke" href="info.php">Thông Tin</a></li>
-            <li class="nav-item active"><a id="logout" href="./logout.php">Đăng xuất</a></li>
+            <li class="nav-item active"><a id="logout" href="../logout.php">Đăng xuất</a></li>
         </ul>
     </div>
     <div class="container">

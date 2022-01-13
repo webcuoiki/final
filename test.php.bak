@@ -39,7 +39,7 @@ require_once("./connect_db.php");
                     <td><?= $row['id'] ?></td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold" >Tên nhiệm vụ 12312312312</td>
+                    <td class="font-weight-bold" >Tên nhiệm vụ</td>
                     <td><?= $row['name'] ?></td>
                 </tr>
                 <tr>

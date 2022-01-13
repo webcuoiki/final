@@ -46,7 +46,7 @@ if (isset($_REQUEST['id'])) {
 <body>
     <div class="header-panel">
         <ul class="header-ul">
-            <li><a class="logo" href="#"><img src=""></a></li>
+            <li><a class="logo" href=""><img src="../src/img/logo.png"></a></li>
             <li><a href="./phongban.php">Quản Lý Phòng Ban</a></li>
             <li><a href="">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Lịch</a></li>

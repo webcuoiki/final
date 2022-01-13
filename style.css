@@ -8,6 +8,10 @@ body.bg_login {
     background-size: cover;
 }
 
+body {
+    background: url(./src/img/bgbd.png);
+}
+
 .container_login {
     width: 400px;
     max-width: 400px;
@@ -128,20 +132,22 @@ body.bg_login {
     text-decoration: underline;
 }
 
+.col-8 {
+    padding-left: 0.5cm;
+}
+
 .header-panel ul {
-    display: flex;
-    background-color: #67abce;
+    background-color: #62bae6;
     list-style-type: none;
     text-align: left;
     overflow: hidden;
     width: 100%;
-    display: flexbox;
 }
 
 .header-panel li {
     color: white;
     display: inline-block;
-    width: 200px;
+    width: 180px;
     height: auto;
     line-height: 50px;
     outline-width: 100px;
@@ -155,6 +161,31 @@ body.bg_login {
     display: block;
 }
 
-.col-8 {
-    padding-left: 0.5cm;
+.header-panel li {
+    color: white;
+    display: inline-block;
+    width: 180px;
+    height: auto;
+    line-height: 50px;
+    outline-width: 100px;
+    margin-left: 50px;
+    text-align: center;
+}
+
+.header-panel a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}
+
+.header-panel .header-ul li:hover {
+    color: rgb(243, 196, 196);
+}
+
+.header-panel a:hover {
+    color: rgb(0, 0, 0);
+}
+
+a .logo {
+    width: 50px;
 }

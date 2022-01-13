@@ -58,6 +58,15 @@ function user_exists($user)
     }
     return false;
 }
+function getInfouser($user){
+    $query =  "SELECT * FROM account WHERE username = $user";
+ 
+    $conn = connection();
+    $result = mysqli_query($conn, $query);
+  
+    return $result;
+
+}
 
 //tham số: username, pass, fullname, phòng ban, chức vụ
 function register($user, $pass, $fullname, $phongban, $birthday, $gender, $email, $phone, $address)

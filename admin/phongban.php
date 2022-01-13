@@ -31,11 +31,11 @@ if ($_SESSION['role'] != 'admin') {
 <body>
     <div class="header-panel">
         <ul class="header-ul">
-            <li><a class="logo" href="#"><img src=""></a></li>
+            <li><a class="logo" href=""><img src="../src/img/logo.png"></a></li>
             <li><a href="./phongban.php">Quản Lý Phòng Ban</a></li>
             <li><a href="./index.php">Quản Lý Nhân Viên</a></li>
             <li><a href="#">Quản Lý Lịch</a></li>
-            <li class="nav-item active"><a id="thongke" href="./admin/info.php">Thông Tin</a></li>
+            <li class="nav-item active"><a id="thongke" href="info.php">Thông Tin</a></li>
             <li class="nav-item active"><a id="logout" href="../logout.php">Đăng xuất</a></li>
         </ul>
     </div>
